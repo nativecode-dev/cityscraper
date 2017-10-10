@@ -1,0 +1,14 @@
+{
+  "author": "Mike Pham <support@nativecode.com> (https://www.mikepham.com)",
+  "description": "Provides default scrapers for particular sites.",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "name": "@nativecode/cityscraper",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "build": "gulp build",
+    "test": "gulp test"
+  }
+}

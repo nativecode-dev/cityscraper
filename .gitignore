@@ -1,0 +1,6 @@
+.vscode/
+lib/
+node_modules/
+
+.jsbeautifyrc
+npm-debug.log
