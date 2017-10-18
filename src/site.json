@@ -1,0 +1,37 @@
+{
+  "definition": {
+    "form": {
+      "fields": [{
+        "mapping": {
+          "source": "STRING",
+          "value": "Fast and Furious"
+        },
+        "id": "q",
+        "name": "q",
+        "priority": 0
+      }, {
+        "mapping": {
+          "source": "STRING",
+          "value": null
+        },
+        "id": "l",
+        "ignore": true,
+        "name": "l",
+        "priority": 0
+      }],
+      "selectors": [{
+        "name": "search-results",
+        "selector": "div.search-results div.title"
+      }],
+      "submit": {
+        "action": "FORM_ACTION",
+        "url": "https://subscene.com/subtitles/title"
+      }
+    },
+    "name": "form",
+    "selector": "form :first"
+  },
+  "description": "Sample Site Scraper",
+  "name": "sample-site-scraper",
+  "url": "https://subscene.com"
+}
