@@ -1,7 +1,7 @@
 import * as URL from 'url'
 
-import { ISiteScraper } from './ISiteScraper'
 import { FormField, FormResult, MappingSource, Site } from '../models'
+import { ISiteScraper } from './ISiteScraper'
 
 export class SiteFormSubmitService implements ISiteScraper {
   public scrape(site: Site): Promise<FormResult> {
@@ -11,8 +11,6 @@ export class SiteFormSubmitService implements ISiteScraper {
         .filter((field: FormField) => field.mapping.source === MappingSource.String)
         .map((field: FormField) => `${encodeURIComponent(field.name)}=${(field.mapping.value || '')}`)
         .join('&')
-
-      console.log(encodeURI(`${url.href}${url.query}`))
     }
 
     return Promise.resolve(new FormResult())

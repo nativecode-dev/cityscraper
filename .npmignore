@@ -1,9 +1,8 @@
 .vscode/
 node_modules/
 src/
-tests/
 
 .jsbeautifyrc
-gulpfile.js
-gulpfile.json
+tsconfig.json
+tslint.json
 npm-debug.log

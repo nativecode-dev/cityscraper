@@ -1,5 +1,5 @@
-import { Model } from './Model'
 import { Definition } from './Definition'
+import { Model } from './Model'
 
 export class Site extends Model {
   public definition: Definition

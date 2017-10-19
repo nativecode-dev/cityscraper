@@ -1,8 +1,8 @@
 import URL = require('url')
 
-import { IMessageHandler } from './IMessageHandler'
 import { Connection, Exchange, Message, Queue } from 'amqp-ts'
 import { Site } from '../models'
+import { IMessageHandler } from './IMessageHandler'
 
 const vhost = (url: URL.Url): string => {
   if (url.pathname) {
@@ -46,13 +46,11 @@ export class MessageProcessor {
             const curr = await current
             return Object.assign(prev, curr)
           }, Promise.resolve({}))
-          .catch((error: any) => console.log(error))
 
         message.ack()
         return result
       } catch (error) {
         message.reject(false)
-        console.log(error)
       }
     })
   }
