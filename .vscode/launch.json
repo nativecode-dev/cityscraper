@@ -3,10 +3,13 @@
     "name": "debug",
     "type": "node",
     "request": "launch",
-    "args": ["src/services/start-logging.ts"],
+    "args": ["src/start-scraping.ts"],
     "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
     "sourceMaps": true,
     "cwd": "${workspaceRoot}",
-    "protocol": "inspector"
+    "protocol": "inspector",
+    "env": {
+      "NODE_ENV": "debug"
+    }
   }]
 }

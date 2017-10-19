@@ -1,18 +1,14 @@
-import { Connection } from 'amqp-ts'
+import { Connection, Exchange, Message, Queue } from 'amqp-ts'
 
-import { Lincoln } from '@nofrills/lincoln'
-import { Message, Queue } from 'amqp-ts'
-import { Logger } from '../logging'
-
-export type RabbitQueueHandler<T> = (body: T, properties: any) => Promise<T>
+export type RabbitQueueHandler<T> = (body: T, properties: any) => Promise<any>
 
 export class RabbitQueue<T> {
+  private readonly exchange: Exchange | null
   private readonly rabbit: Connection
-  private readonly log: Lincoln
   private readonly queue: Queue
 
-  constructor(rabbit: Connection, queue: Queue) {
-    this.log = Logger.extend('RabbitQueue')
+  constructor(rabbit: Connection, queue: Queue, exchange?: Exchange) {
+    this.exchange = exchange || null
     this.queue = queue
     this.rabbit = rabbit
   }
@@ -38,13 +34,19 @@ export class RabbitQueue<T> {
         }
       } catch (error) {
         message.nack()
-        this.log.error(error)
       }
     })
   }
 
+  public publish(body: T): void {
+    if (this.exchange) {
+      this.exchange.send(new Message(JSON.stringify(body)))
+    } else {
+      this.send(body)
+    }
+  }
+
   public send(body: T): void {
-    const message = new Message(JSON.stringify(body))
-    this.queue.send(message)
+    this.queue.send(new Message(JSON.stringify(body)))
   }
 }

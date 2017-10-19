@@ -10,30 +10,38 @@ export class RabbitConnection {
     this.connection = new Connection(this.uri(url))
   }
 
-  public inbox<T>(name: string): RabbitQueue<T> {
-    const exchange = this.connection.declareExchange('amq.fanout', 'fanout')
-    const queue = this.connection.declareQueue(`cityscraper:inbox:${name}:${process.pid}`, { durable: false, exclusive: true })
-    queue.bind(exchange)
-    return new RabbitQueue<T>(this.connection, queue)
+  public get initialized(): Promise<void> {
+    return this.connection.completeConfiguration()
   }
 
-  public pubsub<T>(name: string): RabbitQueue<T> {
-    const exchange = this.connection.declareExchange('amq.fanout', 'fanout')
-    const queue = this.connection.declareQueue(`cityscraper:pubsub:${name}:${process.pid}`, { durable: false })
+  public inbox<T>(name: string): Promise<RabbitQueue<T>> {
+    const exchange = this.connection.declareExchange(`cityscraper:${this.clean(name)}`, 'fanout')
+    const queue = this.connection.declareQueue(`cityscraper:${this.clean(name)}`, { autoDelete: true, durable: false })
     queue.bind(exchange)
-    return new RabbitQueue<T>(this.connection, queue)
+    return this.initialized.then(() => new RabbitQueue<T>(this.connection, queue, exchange))
   }
 
-  public queue<T>(name: string): RabbitQueue<T> {
-    const queue = this.connection.declareQueue(`cityscraper:queue:${name}`, { durable: true })
-    return new RabbitQueue<T>(this.connection, queue)
+  public pubsub<T>(name: string): Promise<RabbitQueue<T>> {
+    const exchange = this.connection.declareExchange(`cityscraper:${this.clean(name)}`, 'fanout')
+    const queue = this.connection.declareQueue(`cityscraper:${this.clean(name)}:${process.pid}`, { autoDelete: true, durable: false })
+    queue.bind(exchange)
+    return this.initialized.then(() => new RabbitQueue<T>(this.connection, queue, exchange))
   }
 
-  public topic<T>(topic: string): RabbitQueue<T> {
-    const exchange = this.connection.declareExchange('amq.topic', 'topic')
-    const queue = this.connection.declareQueue(topic, { durable: false, exclusive: true })
+  public queue<T>(name: string): Promise<RabbitQueue<T>> {
+    const queue = this.connection.declareQueue(`cityscraper:${this.clean(name)}`, { durable: true })
+    return this.initialized.then(() => new RabbitQueue<T>(this.connection, queue))
+  }
+
+  public topic<T>(name: string): Promise<RabbitQueue<T>> {
+    const exchange = this.connection.declareExchange(`cityscraper:${this.clean(name)}`, 'topic')
+    const queue = this.connection.declareQueue(`cityscraper:${this.clean(name)}`, { autoDelete: true, durable: false })
     queue.bind(exchange)
-    return new RabbitQueue<T>(this.connection, queue)
+    return this.initialized.then(() => new RabbitQueue<T>(this.connection, queue, exchange))
+  }
+
+  private clean(name: string): string {
+    return name.replace(/[\s,\/,_]/g, '-')
   }
 
   private uri(url: URL.Url) {

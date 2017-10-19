@@ -20,14 +20,17 @@
     "rimraf": "^2.6.2",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
+    "tslint-config-standard": "^6.0.1",
     "typescript": "^2.5.3"
   },
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "prebuild": "yarn run lint",
     "clean": "rimraf dist",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint src/",
     "cli": "ts-node src/cli.ts",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "start-logging": "ts-node src/start-logging.ts",
+    "start-scraping": "ts-node src/start-scraping.ts"
   }
 }
