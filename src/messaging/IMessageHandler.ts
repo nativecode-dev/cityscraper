@@ -1,4 +1,6 @@
 export interface IMessageHandler {
-  handle(message: any): Promise<void>
-  handles(message: any): boolean
+  priority: number
+
+  handle(message: object): Promise<object>
+  handles(message: object): boolean
 }
