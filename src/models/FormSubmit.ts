@@ -6,4 +6,7 @@ export class FormSubmit extends Model {
   public postscript?: string
   public prescript?: string
   public url?: string
+  public get key(): string {
+    return 'cityscraper.form-submit'
+  }
 }

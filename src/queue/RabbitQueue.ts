@@ -1,8 +1,9 @@
 import { Connection, Exchange, Message, Queue } from 'amqp-ts'
+import { Model } from '../models/Model'
 
-export type RabbitQueueHandler<T> = (body: T, properties: any) => Promise<void>
+export type RabbitQueueHandler<T extends Model | any> = (body: T, properties: any) => Promise<void>
 
-export class RabbitQueue<T> {
+export class RabbitQueue<T extends Model | any> {
   private readonly exchange: Exchange | null
   private readonly rabbit: Connection
   private readonly queue: Queue
@@ -33,15 +34,15 @@ export class RabbitQueue<T> {
     })
   }
 
-  public publish(body: T): void {
+  public publish(body: T, route?: string): void {
     if (this.exchange) {
-      this.exchange.send(new Message(JSON.stringify(body)))
+      this.exchange.send(new Message(JSON.stringify(body)), route)
     } else {
       this.send(body)
     }
   }
 
-  public send(body: T): void {
-    this.queue.send(new Message(JSON.stringify(body)))
+  public send(body: T, route?: string): void {
+    this.queue.send(new Message(JSON.stringify(body)), route)
   }
 }

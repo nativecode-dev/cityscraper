@@ -6,4 +6,7 @@ export class Site extends Model {
   public description: string
   public name: string
   public url: string
+  public get key(): string {
+    return 'cityscraper.site'
+  }
 }

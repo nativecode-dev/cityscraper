@@ -14,9 +14,8 @@ if (cluster.isMaster && process.env.NODE_ENV !== 'debug') {
 
   console.log(`worker process ${process.pid}`)
   Promise.resolve(Rabbit.initialized).then(async () => {
-    const id = `scraper:${process.pid}`
     const log = Logger.extend('start-scraping')
-    const queue = await Rabbit.inbox<Site>('scraping')
+    const queue = await Rabbit.queue<Site>('scraping')
     const results = await Rabbit.queue<ScrapeResult>('scraping-results')
 
     queue.message(async (body: Site, properties: any): Promise<any> => {

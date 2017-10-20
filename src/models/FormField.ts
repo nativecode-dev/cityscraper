@@ -6,4 +6,7 @@ export class FormField extends Model {
   public mapping: Mapping
   public name: string
   public priority: number
+  public get key(): string {
+    return 'cityscraper.form-field'
+  }
 }

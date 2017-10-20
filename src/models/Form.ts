@@ -7,4 +7,7 @@ export class Form extends Model {
   public fields: FormField[] = []
   public selectors: FormSelector[] = []
   public submit: FormSubmit
+  public get key(): string {
+    return 'cityscraper.form'
+  }
 }
