@@ -8,11 +8,12 @@
   "dependencies": {
     "@nofrills/lincoln": "^0.10.2",
     "amqp-ts": "^1.4.0",
-    "common-locations": "^2.4.0",
-    "debug": "^3.1.0",
-    "inquirer": "^3.3.0"
+    "axios": "^0.16.2",
+    "cheerio": "^1.0.0-rc.2",
+    "debug": "^3.1.0"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.3",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.0.44",
     "chai": "^4.1.2",

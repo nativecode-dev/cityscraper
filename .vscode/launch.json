@@ -3,7 +3,7 @@
     "name": "debug",
     "type": "node",
     "request": "launch",
-    "args": ["src/start-logging.ts"],
+    "args": ["src/start-scraping.ts"],
     "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
     "sourceMaps": true,
     "cwd": "${workspaceRoot}",

@@ -3,5 +3,5 @@ import { SiteResultSelection } from './SiteResultSelection'
 
 export class SiteResult extends Model {
   public content: string
-  public selections: SiteResultSelection[]
+  public selections: SiteResultSelection[] = []
 }

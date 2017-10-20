@@ -1,5 +1,6 @@
 dist/
 lib/
+logs/
 node_modules/
 
 .jsbeautifyrc

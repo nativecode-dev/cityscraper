@@ -1,5 +1,5 @@
 export abstract class Model {
-  public dateCreated: Date
+  public dateCreated: Date = new Date()
   public dateUpdated: Date
-  public id: string
+  public id: string = Date.now().toString()
 }

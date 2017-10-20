@@ -21,7 +21,7 @@
       }],
       "selectors": [{
         "name": "search-results",
-        "selector": "div.search-results div.title"
+        "selector": "div.search-result div.title"
       }],
       "submit": {
         "action": "FORM_ACTION",

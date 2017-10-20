@@ -4,7 +4,7 @@ import { FormSubmit } from './FormSubmit'
 import { Model } from './Model'
 
 export class Form extends Model {
-  public fields: FormField[]
-  public selectors: FormSelector[]
+  public fields: FormField[] = []
+  public selectors: FormSelector[] = []
   public submit: FormSubmit
 }

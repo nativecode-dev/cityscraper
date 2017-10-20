@@ -1,6 +1,6 @@
 import * as cluster from 'cluster'
 import { DebugLine, Logger } from './logging'
-import { Site } from './models'
+import { ScrapeResult, Site, SiteResult } from './models'
 import { Rabbit, RabbitQueue } from './queue'
 import { SiteScraper } from './scraping'
 
@@ -13,16 +13,21 @@ if (cluster.isMaster && process.env.NODE_ENV !== 'debug') {
 } else if (cluster.isWorker || process.env.NODE_ENV === 'debug') {
 
   console.log(`worker process ${process.pid}`)
-  Promise.resolve(true).then(async () => {
+  Promise.resolve(Rabbit.initialized).then(async () => {
     const id = `scraper:${process.pid}`
-    const log = Logger.extend('scraping')
+    const log = Logger.extend('start-scraping')
     const queue = await Rabbit.inbox<Site>('scraping')
+    const results = await Rabbit.queue<ScrapeResult>('scraping-results')
 
     queue.message(async (body: Site, properties: any): Promise<any> => {
-      console.log('message', body)
-      const result = await SiteScraper(body)
+      const result = await SiteScraper(body, results)
       log.debug('processed', body, result)
       return result
+    })
+
+    process.on('exit', () => {
+      queue.close()
+      results.close()
     })
   }).catch((error) => {
     console.log(error)

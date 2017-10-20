@@ -1,6 +1,6 @@
 import { Connection, Exchange, Message, Queue } from 'amqp-ts'
 
-export type RabbitQueueHandler<T> = (body: T, properties: any) => Promise<any>
+export type RabbitQueueHandler<T> = (body: T, properties: any) => Promise<void>
 
 export class RabbitQueue<T> {
   private readonly exchange: Exchange | null
@@ -25,13 +25,8 @@ export class RabbitQueue<T> {
     this.queue.activateConsumer(async (message: Message) => {
       try {
         const json = JSON.parse(message.getContent())
-        const response = await request(json, message.properties)
-
-        if (response) {
-          message.ack()
-        } else {
-          message.reject()
-        }
+        await request(json, message.properties)
+        message.ack()
       } catch (error) {
         message.nack()
       }
